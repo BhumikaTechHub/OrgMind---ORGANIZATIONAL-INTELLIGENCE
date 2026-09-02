@@ -1,0 +1,41 @@
+services:
+   app_service:
+        build: .
+        container_name: app_service
+        command: uvicorn app_service:app --host 0.0.0.0 --port 8000
+        ports:
+          - "8000:8000"
+        depends_on:
+          - retrieval_service
+          - llm_service
+
+   retrieval_service:
+        build: .
+        container_name: retrieval_service
+        command: uvicorn retrieval_service:app --host 0.0.0.0 --port 8001
+        ports:
+          - "8001:8001"
+        volumes:
+          - ./chroma_db:/app/chroma_db
+          - ./knowledge_base:/app/knowledge_base
+        depends_on:
+          - ollama
+
+   llm_service:
+        build: .
+        container_name: llm_service
+        command: uvicorn llm_service:app --host 0.0.0.0 --port 8002
+        ports:
+          - "8002:8002"
+        depends_on:
+          - ollama
+   ollama:
+        image: ollama/ollama
+        container_name: ollama
+        volumes:
+          - ollama_data:/root/.ollama
+
+
+volumes:
+   ollama_data:
+
