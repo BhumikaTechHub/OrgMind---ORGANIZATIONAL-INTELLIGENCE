@@ -37,7 +37,7 @@ def get_embedding(text):
 
 document_id = 0
 for filename in os.listdir(DOCUMENT_FOLDER):
-   if not filename.endswith(".txt"):
+   if not filename.endswith((".txt", ".md")):
       continue
    filepath = os.path.join(DOCUMENT_FOLDER, filename)
    with open(filepath, "r", encoding ="utf-8") as file:
@@ -51,7 +51,7 @@ for filename in os.listdir(DOCUMENT_FOLDER):
           embeddings = [embedding],
           metadatas = [{"source": filename}]
       )
-      document_id += 1       
+      document_id += 1
 print("Knowledge base created successfully")
 print("Documents/chunks stored:", document_id)
- 
+

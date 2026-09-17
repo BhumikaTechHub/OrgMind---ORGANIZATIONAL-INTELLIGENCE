@@ -6,7 +6,7 @@ CHROMA_FOLDER = "chroma_db"
 
 OLLAMA_URL = "http://localhost:11434"
 EMBEDDING_MODEL = "nomic-embed-text"
-LLM_MODEL= "llama3.2:1b"
+LLM_MODEL= "qwen2.5:0.5b"
 
 client = chromadb.PersistentClient(path = CHROMA_FOLDER)
 collection = client.get_collection(name = "company_knowledge")
