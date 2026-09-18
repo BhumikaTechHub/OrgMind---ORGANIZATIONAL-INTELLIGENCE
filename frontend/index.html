@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>OrgMind - Organizational Intelligence</title>
+
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+
+  <body>
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+      <!-- BRAND -->
+      <div class="brand">
+        <div class="brand-icon">✦</div>
+
+        <div>
+          <h2>OrgMind</h2>
+          <span>Organizational Intelligence</span>
+        </div>
+      </div>
+
+
+      <!-- WORKSPACE -->
+      <div class="sidebar-section">
+        <p class="section-title">WORKSPACE</p>
+
+        <button class="sidebar-btn active" id="chatNav" onclick="showChatView()">
+          <span>💬</span>
+          Organizational Intelligence
+        </button>
+
+        <button class="sidebar-btn" id="evaluationNav" onclick="showEvaluationView()">
+          <span>📊</span>
+          Evaluation Dashboard
+        </button>
+      </div>
+
+
+      <!-- QUICK TOPICS -->
+      <div class="sidebar-section">
+        <p class="section-title">QUICK TOPICS</p>
+
+        <!-- Leave Policy -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('How many casual leaves are employees entitled to?')"
+        >
+          🏖️ &nbsp; Leave Policy
+        </button>
+
+        <!-- Work From Home -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What is the work from home policy?')"
+        >
+          🏠 &nbsp; Work From Home
+        </button>
+
+        <!-- Working Hours -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What are the working hours?')"
+        >
+          🕐 &nbsp; Working Hours
+        </button>
+
+        <!-- Notice Period -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What is the notice period for employees?')"
+        >
+          📄 &nbsp; Notice Period
+        </button>
+
+        <!-- Organization -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What are the key principles of the organization?')"
+        >
+          🏢 &nbsp; Organization
+        </button>
+
+        <!-- AI Strategy -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What is GitLab’s AI vision and strategy?')"
+        >
+          🤖 &nbsp; AI Strategy
+        </button>
+
+        <!-- AI Agents -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What are the guidelines for using AI agents?')"
+        >
+          🧠 &nbsp; AI Agents
+        </button>
+
+        <!-- Internships -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What can interns expect from their internship?')"
+        >
+          🎓 &nbsp; Internships
+        </button>
+
+        <!-- Merge Request Review -->
+        <button
+          class="topic-btn"
+          onclick="setQuestion('What is the merge request review process?')"
+        >
+          🔍 &nbsp; MR Review
+        </button>
+      </div>
+
+
+      <!-- RECENT QUESTIONS -->
+      <div class="sidebar-section history-section">
+
+        <div class="history-header">
+          <p class="section-title">RECENT QUESTIONS</p>
+
+          <button
+            class="clear-history"
+            onclick="clearHistory()"
+            title="Clear history"
+          >
+            Clear
+          </button>
+        </div>
+
+        <div id="historyList" class="history-list">
+          <div class="empty-history">
+            No recent questions
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- SIDEBAR BOTTOM -->
+      <div class="sidebar-bottom">
+
+        <div class="system-status">
+          <span class="status-dot"></span>
+          System Online
+        </div>
+
+        <small>RAG + Ollama Architecture</small>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN APPLICATION ================= -->
+
+    <main class="main">
+
+
+      <!-- HEADER -->
+      <header class="topbar">
+
+        <div>
+          <p class="breadcrumb">
+            ORGANIZATIONAL INTELLIGENCE
+          </p>
+
+          <h1>OrgMind</h1>
+        </div>
+
+
+        <!-- CLICKABLE SYSTEM STATUS -->
+        <button
+          class="header-status"
+          onclick="toggleSystemPanel()"
+        >
+
+          <span
+            class="status-dot"
+            id="mainStatusDot"
+          ></span>
+
+          <span id="mainStatusText">
+            Services Connected
+          </span>
+
+          <span class="status-arrow">
+            ▾
+          </span>
+
+        </button>
+
+      </header>
+
+
+      <!-- SYSTEM STATUS PANEL -->
+
+      <div
+        id="systemPanel"
+        class="system-panel"
+      >
+
+        <div class="system-panel-header">
+
+          <div>
+            <strong>System Status</strong>
+            <small>Service health overview</small>
+          </div>
+
+          <button
+            class="close-panel"
+            onclick="toggleSystemPanel()"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <!-- Application Service -->
+
+        <div class="service-item">
+
+          <div class="service-left">
+
+            <span class="service-icon">
+              ⚙️
+            </span>
+
+            <div>
+              <strong>Application Service</strong>
+              <small>FastAPI / Uvicorn</small>
+            </div>
+
+          </div>
+
+          <span
+            class="service-status checking"
+            id="appServiceStatus"
+          >
+            Checking...
+          </span>
+
+        </div>
+
+
+        <!-- Retrieval Service -->
+
+        <div class="service-item">
+
+          <div class="service-left">
+
+            <span class="service-icon">
+              🔎
+            </span>
+
+            <div>
+              <strong>Retrieval Service</strong>
+              <small>Knowledge Base / RAG</small>
+            </div>
+
+          </div>
+
+          <span
+            class="service-status checking"
+            id="retrievalServiceStatus"
+          >
+            Checking...
+          </span>
+
+        </div>
+
+
+        <!-- LLM Service -->
+
+        <div class="service-item">
+
+          <div class="service-left">
+
+            <span class="service-icon">
+              🧠
+            </span>
+
+            <div>
+              <strong>LLM Service</strong>
+              <small>AI Generation</small>
+            </div>
+
+          </div>
+
+          <span
+            class="service-status checking"
+            id="llmServiceStatus"
+          >
+            Checking...
+          </span>
+
+        </div>
+
+
+        <!-- Ollama -->
+
+        <div class="service-item">
+
+          <div class="service-left">
+
+            <span class="service-icon">
+              🤖
+            </span>
+
+            <div>
+              <strong>Ollama</strong>
+              <small>Local LLM Runtime</small>
+            </div>
+
+          </div>
+
+          <span
+            class="service-status checking"
+            id="ollamaServiceStatus"
+          >
+            Checking...
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div id="chatView" class="chat-view">
+      <!-- ================= WELCOME ================= -->
+
+      <section class="welcome">
+
+        <div class="welcome-icon">
+          ✦
+        </div>
+
+        <h2>
+          Ask about your workplace policies.
+        </h2>
+
+        <p>
+          Get answers from your organization's knowledge base
+          using retrieval-augmented AI.
+        </p>
+
+      </section>
+
+
+      <!-- ================= SUGGESTIONS ================= -->
+
+      <section class="suggestions">
+
+
+        <!-- Leave Entitlements -->
+
+        <button
+          onclick="setQuestion('How many casual leaves are employees entitled to?')"
+        >
+
+          <span>
+            🏖️
+          </span>
+
+          <div>
+            <strong>
+              Leave Entitlements
+            </strong>
+
+            <small>
+              Understand available leaves
+            </small>
+          </div>
+
+        </button>
+
+
+        <!-- Remote Work -->
+
+        <button
+          onclick="setQuestion('What is the work from home policy?')"
+        >
+
+          <span>
+            🏠
+          </span>
+
+          <div>
+            <strong>
+              Remote Work
+            </strong>
+
+            <small>
+              Check WFH policies
+            </small>
+          </div>
+
+        </button>
+
+
+        <!-- AI Strategy -->
+
+        <button
+          onclick="setQuestion('What is GitLab’s AI vision and strategy?')"
+        >
+
+          <span>
+            🤖
+          </span>
+
+          <div>
+            <strong>
+              AI Strategy
+            </strong>
+
+            <small>
+              Explore AI vision and goals
+            </small>
+          </div>
+
+        </button>
+
+
+        <!-- Organization -->
+
+        <button
+          onclick="setQuestion('What are the key principles of the organization?')"
+        >
+
+          <span>
+            🏢
+          </span>
+
+          <div>
+            <strong>
+              Organization
+            </strong>
+
+            <small>
+              Learn organizational principles
+            </small>
+          </div>
+
+        </button>
+
+
+        <!-- Internships -->
+
+        <button
+          onclick="setQuestion('What can interns expect from their internship?')"
+        >
+
+          <span>
+            🎓
+          </span>
+
+          <div>
+            <strong>
+              Internships
+            </strong>
+
+            <small>
+              Explore internship experience
+            </small>
+          </div>
+
+        </button>
+
+
+        <!-- AI Agents -->
+
+        <button
+          onclick="setQuestion('What are the guidelines for using AI agents?')"
+        >
+
+          <span>
+            🧠
+          </span>
+
+          <div>
+            <strong>
+              AI Agents
+            </strong>
+
+            <small>
+              Learn AI agent guidelines
+            </small>
+          </div>
+
+        </button>
+
+
+      </section>
+
+
+      <!-- ================= CHAT ================= -->
+
+      <section class="chat-container">
+
+        <div
+          id="chatMessages"
+          class="chat-messages"
+        >
+
+          <!-- Initial AI message -->
+
+          <div class="message assistant-message">
+
+            <div class="avatar">
+              ✦
+            </div>
+
+            <div class="message-content">
+
+              <div class="message-name">
+                OrgMind AI
+              </div>
+
+              <div class="bubble">
+
+                Hello! I'm your organizational intelligence
+                assistant. Ask me anything about your
+                organization's policies, benefits, leave rules,
+                workplace guidelines, or procedures.
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= INPUT ================= -->
+
+        <div class="input-area">
+
+          <!-- MODEL SELECTOR -->
+          <div class="model-selector">
+            <label for="modelSelect">Choose Model</label>
+            <select id="modelSelect">
+              <option value="all">Compare All Models</option>
+              <option value="qwen2.5:0.5b">Qwen 2.5 0.5B</option>
+              <option value="gemma3:270m">Gemma 3 270M</option>
+              <option value="smollm2:360m">SmolLM2 360M</option>
+            </select>
+          </div>
+
+          <div class="input-wrapper">
+
+            <textarea
+              id="questionInput"
+              placeholder="Ask a question about workplace policies..."
+              rows="1"
+            ></textarea>
+
+            <button
+              id="sendButton"
+              onclick="askQuestion()"
+              title="Send message"
+            >
+              ➤
+            </button>
+
+          </div>
+
+
+          <p class="input-note">
+
+            AI responses are generated using your organization's
+            knowledge base.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+<!-- LIVE RESULTS MUST BE OUTSIDE chatView -->
+<section
+    id="liveEvaluationResults"
+    class="live-evaluation-results">
+</section>      
+
+
+
+
+      <!-- ================= WEEK 4 EVALUATION DASHBOARD ================= -->
+
+      <section id="evaluationDashboard" class="evaluation-dashboard">
+        <!-- Dashboard content is generated by script.js -->
+      </section>
+
+      </section>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+  </body>
+</html>
